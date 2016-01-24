@@ -3,10 +3,13 @@ package com.markod.rssfeed.fragments;
 
 import android.app.Activity;
 import android.app.LauncherActivity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
@@ -21,8 +24,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.markod.rssfeed.MainActivity;
 import com.markod.rssfeed.R;
 import com.markod.rssfeed.RssFeedDatabaseHelper;
+
+import java.util.List;
 
 
 public class Tab3Fragment extends ListFragment {
@@ -47,18 +53,8 @@ public class Tab3Fragment extends ListFragment {
     }
 
     private void setCursorAdapter(View view) {
-        try {
-            SQLiteOpenHelper helper = new RssFeedDatabaseHelper(getActivity());
-            SQLiteDatabase db = helper.getReadableDatabase();
-            Cursor sourcesCursor = db.query("rss_feed", new String[]{"_id", "source_name", "source_url", "show_feed"}, null, null, null, null, null);
-            CursorAdapter cursorAdapter = new SourcesCursorAdapter(getActivity(), R.layout.name_description_switch_list_item, sourcesCursor, new String[]{"source_name", "source_url"}, new int[]{R.id.text1, R.id.text2});
-            ListView listViewSources = (ListView) view.findViewById(android.R.id.list);
-            listViewSources.setAdapter(cursorAdapter);
-            db.close();
-        } catch (Exception e) {
-            Toast toast = Toast.makeText(getContext(), "Database unavailable", Toast.LENGTH_SHORT);
-            toast.show();
-        }
+        ListView listViewSources = (ListView) view.findViewById(android.R.id.list);
+        new GetSourcesAsyncTask().execute(listViewSources);
     }
 
     private class SourcesCursorAdapter extends SimpleCursorAdapter {
@@ -88,6 +84,42 @@ public class Tab3Fragment extends ListFragment {
             Boolean switchEnabled;
             switchEnabled = cursor.getInt(3) == 1;
             switch1.setChecked(switchEnabled);
+        }
+    }
+
+    private class GetSourcesAsyncTask extends AsyncTask<ListView, Void, Boolean> {
+
+        ListView listViewSources;
+        Cursor sourcesCursor;
+        SQLiteDatabase db;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(ListView... views) {
+            listViewSources = views[0];
+            SQLiteOpenHelper helper = new RssFeedDatabaseHelper(getActivity());
+            try {
+                db = helper.getReadableDatabase();
+                sourcesCursor = db.query("rss_feed", new String[]{"_id", "source_name", "source_url", "show_feed"}, null, null, null, null, null);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (!success) {
+                Toast.makeText(getActivity(), "Database unavailable", Toast.LENGTH_LONG).show();
+            } else {
+                CursorAdapter cursorAdapter = new SourcesCursorAdapter(getActivity(), R.layout.name_description_switch_list_item, sourcesCursor, new String[]{"source_name", "source_url"}, new int[]{R.id.text1, R.id.text2});
+                listViewSources.setAdapter(cursorAdapter);
+                db.close();
+            }
         }
     }
 }
