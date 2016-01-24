@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.markod.rssfeed.AddEditSourceActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/source_name"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"/>
+
+    <EditText
+        android:id="@+id/source_name_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:labelFor="@+id/source_url_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/source_url"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"/>
+
+    <EditText
+        android:id="@+id/source_url_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textUri"
+        android:layout_marginStart="16dp"/>
+
+</LinearLayout>

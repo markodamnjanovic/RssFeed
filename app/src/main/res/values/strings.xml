@@ -3,4 +3,12 @@
     <string name="menu_about">About</string>
     <string name="app_author_name">Author: Marko Damnjanovic</string>
     <string name="app_author_email">marko2436@gmail.com</string>
+    <string name="option_add">Add</string>
+    <string name="source_name">Source Name</string>
+    <string name="source_url">Source URL</string>
+    <string name="option_save">Save</string>
+    <string name="EditTitle">Edit Source</string>
+    <string name="AddTitle">Add Source</string>
+    <string name="populate_field_error">Please populate this field</string>
+    <string name="go_to_edit_source">Go to edit source</string>
 </resources>

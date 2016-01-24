@@ -17,7 +17,7 @@ import java.util.List;
 
 public class AboutActivity extends AppCompatActivity {
 
-    ArrayList<AboutAppListItem> objectList = new ArrayList<>();
+    ArrayList<NameDescriptionListItem> objectList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,22 +31,22 @@ public class AboutActivity extends AppCompatActivity {
         actionBar.setTitle(R.string.menu_about);
 
         String versionName = "Version " + BuildConfig.VERSION_NAME;
-        AboutAppListItem appNameItem = new AboutAppListItem(getResources().getString(R.string.app_name), versionName);
-        AboutAppListItem authorNameItem = new AboutAppListItem(getString(R.string.app_author_name), getString(R.string.app_author_email));
+        NameDescriptionListItem appNameItem = new NameDescriptionListItem(getResources().getString(R.string.app_name), versionName);
+        NameDescriptionListItem authorNameItem = new NameDescriptionListItem(getString(R.string.app_author_name), getString(R.string.app_author_email));
         objectList.add(appNameItem);
         objectList.add(authorNameItem);
-        AboutAppArayAdapter aboutAppArayAdapter= new AboutAppArayAdapter(this, android.R.layout.simple_list_item_2, objectList);
+        NameDescriptionArayAdapter nameDescriptionArayAdapter = new NameDescriptionArayAdapter(this, android.R.layout.simple_list_item_2, objectList);
         ListView aboutListView = (ListView) findViewById(R.id.about_list_view);
-        aboutListView.setAdapter(aboutAppArayAdapter);
+        aboutListView.setAdapter(nameDescriptionArayAdapter);
 
     }
 }
 
-class AboutAppArayAdapter extends ArrayAdapter<AboutAppListItem> {
+class NameDescriptionArayAdapter extends ArrayAdapter<NameDescriptionListItem> {
     private Context context;
-    private List<AboutAppListItem> objects;
+    private List<NameDescriptionListItem> objects;
 
-    public AboutAppArayAdapter(Context context, int resource, List<AboutAppListItem> objects) {
+    public NameDescriptionArayAdapter(Context context, int resource, List<NameDescriptionListItem> objects) {
         super(context, resource, objects);
         this.context = context;
         this.objects = objects;
@@ -54,10 +54,9 @@ class AboutAppArayAdapter extends ArrayAdapter<AboutAppListItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater =
-                (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(android.R.layout.simple_list_item_2, null);
-        AboutAppListItem currentObject = objects.get(position);
+        NameDescriptionListItem currentObject = objects.get(position);
         TextView nameView = (TextView) view.findViewById(android.R.id.text1);
         TextView descriptionView = (TextView) view.findViewById(android.R.id.text2);
         nameView.setText(currentObject.getItemName());
@@ -66,11 +65,11 @@ class AboutAppArayAdapter extends ArrayAdapter<AboutAppListItem> {
     }
 }
 
-class AboutAppListItem {
+class NameDescriptionListItem {
     String itemName;
     String itemDescription;
 
-    AboutAppListItem(String name, String description) {
+    NameDescriptionListItem(String name, String description) {
         this.itemName = name;
         this.itemDescription = description;
     }

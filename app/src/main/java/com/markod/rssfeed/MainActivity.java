@@ -1,6 +1,10 @@
 package com.markod.rssfeed;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,15 +13,25 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
+import android.view.View;
+import android.widget.ListView;
+import android.widget.Switch;
+import android.widget.Toast;
 import com.markod.rssfeed.fragments.Tab1Fragment;
 import com.markod.rssfeed.fragments.Tab2Fragment;
 import com.markod.rssfeed.fragments.Tab3Fragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    static final int ADD_EDIT_SOURCE_REQUEST = 1;
+    static final String ITEM_POSITION_EXTRA = "itemPositionExtra";
+    static final String IS_ADD_EXTRA = "isAddExtra";
+
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         tabLayout.addTab(tabLayout.newTab().setText("Feeds").setIcon(R.drawable.ic_feeds));
         tabLayout.addTab(tabLayout.newTab().setText("Favorites").setIcon(R.drawable.ic_star_rate_black_18dp));
@@ -37,18 +51,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                invalidateOptionsMenu();
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabUnselected(TabLayout.Tab tab) {}
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabReselected(TabLayout.Tab tab) {}
         });
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean sourcesTabSelected = tabLayout.getSelectedTabPosition() == 2;
+        menu.findItem(R.id.menu_add).setVisible(sourcesTabSelected);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -60,18 +78,59 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.menu_about:
-                Intent intent = new Intent(this, AboutActivity.class);
+                intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.menu_add:
+                intent = new Intent(this, AddEditSourceActivity.class);
+                intent.putExtra(IS_ADD_EXTRA, true);
+                startActivityForResult(intent, ADD_EDIT_SOURCE_REQUEST);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-}
+    public void onEditArrowClicked(View view) {
+        View listItem = (View) view.getParent();
+        ListView listView = (ListView) listItem.getParent();
+        final int position = listView.getPositionForView(listItem);
+        Intent intent = new Intent(this, AddEditSourceActivity.class);
+        intent.putExtra(IS_ADD_EXTRA, false);
+        intent.putExtra(ITEM_POSITION_EXTRA, position + 1);
+        startActivityForResult(intent, ADD_EDIT_SOURCE_REQUEST);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ADD_EDIT_SOURCE_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(this, "Source saved successfully", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public void onSwitchClicked(View view) {
+        View listItem = (View) view.getParent();
+        ListView listView = (ListView) listItem.getParent();
+        final int position = listView.getPositionForView(listItem);
+        boolean switchOn = ((Switch) view).isChecked();
+        try {
+            SQLiteOpenHelper helper = new RssFeedDatabaseHelper(this);
+            SQLiteDatabase db = helper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            if (switchOn) values.put("show_feed", 1);
+            else values.put("show_feed", 0);
+            db.update("rss_feed", values, "_id = ?", new String[]{Integer.toString(position + 1)});
+            db.close();
+        } catch (SQLiteException e) {
+            Toast.makeText(this, "Database unavailable", Toast.LENGTH_LONG).show();
+        }
+    }
+}
 
 class PagerAdapter extends FragmentPagerAdapter {
 
@@ -84,7 +143,6 @@ class PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-
         switch (position) {
             case 0:
                 Tab1Fragment tab1 = new Tab1Fragment();

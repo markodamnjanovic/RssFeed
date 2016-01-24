@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_about" android:title="@string/menu_about"/>
+    <item
+        android:id="@+id/menu_about"
+        android:title="@string/menu_about"
+        android:orderInCategory="1"/>
+
+    <item
+        android:id="@+id/menu_add"
+        android:title="@string/option_add"
+        android:icon="@drawable/ic_add"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom"/>
 
 </menu>
