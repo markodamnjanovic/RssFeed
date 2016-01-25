@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -55,10 +56,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
         });
     }
 
@@ -116,9 +119,10 @@ public class MainActivity extends AppCompatActivity {
     public void onSwitchClicked(View view) {
         View listItem = (View) view.getParent();
         ListView listView = (ListView) listItem.getParent();
-        final int position = listView.getPositionForView(listItem) + 1;
+        final int position = listView.getPositionForView(listItem);
+        String listItemUniqueId = Tab3Fragment.listItemsUniqueIds.get(position);
         boolean switchOn = ((Switch) view).isChecked();
-        new UpdateSourceAsyncTask().execute(position, switchOn);
+        new UpdateSourceAsyncTask().execute(listItemUniqueId, switchOn);
     }
 
     private class UpdateSourceAsyncTask extends AsyncTask<Object, Void, Boolean> {
@@ -129,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Object... objects) {
-            int sourceNo = (int) objects[0];
+            String sourceUniqueId = (String) objects[0];
             boolean switchOn = (boolean) objects[1];
             SQLiteOpenHelper helper = new RssFeedDatabaseHelper(MainActivity.this);
             try {
@@ -137,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 ContentValues values = new ContentValues();
                 if (switchOn) values.put("show_feed", 1);
                 else values.put("show_feed", 0);
-                db.update("rss_feed", values, "_id = ?", new String[]{Integer.toString(sourceNo)});
+                db.update("rss_feed", values, "unique_id = ?", new String[]{sourceUniqueId});
                 db.close();
                 return true;
             } catch (SQLiteException e) {

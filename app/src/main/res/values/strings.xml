@@ -11,4 +11,5 @@
     <string name="AddTitle">Add Source</string>
     <string name="populate_field_error">Please populate this field</string>
     <string name="go_to_edit_source">Go to edit source</string>
+    <string name="action_delete">Delete selected items</string>
 </resources>

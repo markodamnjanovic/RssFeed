@@ -17,7 +17,7 @@ public class RssFeedDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE rss_feed (_id INTEGER PRIMARY KEY AUTOINCREMENT, source_name TEXT, source_url TEXT, favorite INTEGER, show_feed INTEGER);");
+        db.execSQL("CREATE TABLE rss_feed (_id INTEGER PRIMARY KEY AUTOINCREMENT, unique_id TEXT, source_name TEXT, source_url TEXT, favorite INTEGER, show_feed INTEGER);");
     }
 
     @Override

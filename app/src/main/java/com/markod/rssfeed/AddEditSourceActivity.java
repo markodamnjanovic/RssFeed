@@ -20,6 +20,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.UUID;
+
 public class AddEditSourceActivity extends AppCompatActivity {
 
     Intent intent;
@@ -135,7 +137,9 @@ public class AddEditSourceActivity extends AppCompatActivity {
                 sourceUrlView.setError(getString(R.string.populate_field_error));
                 cancel(true);
             }
+            String uniqueId = UUID.randomUUID().toString();
             values = new ContentValues();
+            values.put("unique_id", uniqueId);
             values.put("source_name", sourceName);
             values.put("source_url", sourceUrl);
         }

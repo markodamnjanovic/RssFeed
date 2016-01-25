@@ -15,24 +15,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text1"/>
-    <Switch
-        android:id="@+id/switch1"
+    <ImageView
+        android:id="@+id/imageCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="25dp"
-        android:checked="false"
-        android:layout_alignBottom="@+id/text2"
-        android:layout_toStartOf="@+id/disclosureView"
-        android:onClick="onSwitchClicked"/>
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_keyboard_arrow_right"
-        android:contentDescription="@string/go_to_edit_source"
-        android:layout_alignTop="@+id/switch1"
+        android:layout_marginBottom="11dp"
+        android:src="@drawable/ic_check"
         android:layout_alignParentEnd="true"
-        android:id="@+id/disclosureView"
-        android:onClick="onEditArrowClicked"/>
+        android:layout_alignBottom="@+id/text2"
+        android:visibility="invisible"/>
+
 
 
 </RelativeLayout>
