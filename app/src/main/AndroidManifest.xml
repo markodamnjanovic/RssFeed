@@ -23,8 +23,17 @@
         <activity
             android:name=".AddEditSourceActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".FeedDetailActivity"
-            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".FeedDetailActivity"
+            android:parentActivityName=".MainActivity" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="com.markod.rssfeed" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".RssWebViewActivity"
+            android:parentActivityName=".FeedDetailActivity"/>
     </application>
 
 </manifest>

@@ -128,7 +128,8 @@ public class Tab3Fragment extends ListFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        sourcesCursor.close();
+        if (sourcesCursor != null)
+            sourcesCursor.close();
     }
 
     @Override

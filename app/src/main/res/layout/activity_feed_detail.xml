@@ -112,8 +112,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/textLink"
                 android:layout_below="@id/textViewLink"
-                android:autoLink="web"
-                android:layout_marginTop="4dp"/>
+                android:textColor="#37cfc5"
+                android:layout_marginTop="4dp"
+                android:onClick="onLinkClick"/>
 
         </RelativeLayout>
     </ScrollView>
