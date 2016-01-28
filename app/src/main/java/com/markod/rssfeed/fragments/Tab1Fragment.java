@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.markod.rssfeed.FeedDetailActivity;
 import com.markod.rssfeed.R;
@@ -59,14 +60,21 @@ public class Tab1Fragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = (SwipeRefreshLayout) inflater.inflate(R.layout.fragment_tab1, container, false);
+         view = (SwipeRefreshLayout) inflater.inflate(R.layout.fragment_tab1, container, false);
         view.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new RssHandlerAsyncTask().execute(getActivity());//http://rss.cnn.com/rss/edition.rss  "http://www.blic.rs/rss/Vesti"
-            }
-        });
+                new RssHandlerAsyncTask().execute(getActivity());
+             }
+         });
         feedsListView = (ListView) view.findViewById(android.R.id.list);
+            new RssHandlerAsyncTask().execute(getActivity());
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         feedsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -74,14 +82,12 @@ public class Tab1Fragment extends ListFragment {
                 Intent intent = new Intent(getActivity(), FeedDetailActivity.class);
                 intent.putExtra("title", item.getTitle());
                 intent.putExtra("pubDate", item.getPubDate());
-                //intent.putExtra("description", item)
+                intent.putExtra("description", item.getDescription());
                 intent.putExtra("link", item.getLink());
                 intent.putExtra("channelTitle", item.getChannelTitle());
                 startActivity(intent);
             }
         });
-        new RssHandlerAsyncTask().execute(getActivity());
-        return view;
     }
 
     private class RssHandlerAsyncTask extends AsyncTask<Activity, Integer, List<RssItem>> {
@@ -93,6 +99,7 @@ public class Tab1Fragment extends ListFragment {
             try {
                 SQLiteDatabase db = helper.getWritableDatabase();
                 Cursor cursor = db.query("rss_feed", new String[]{"_id", "source_url"}, "show_feed = ?", new String[] {Integer.toString(1)}, null, null, null);
+                rssItems.clear();
                 while (cursor.moveToNext()) {
                     String sourceUrl = cursor.getString(1);
                     RssReader rssReader = new RssReader(sourceUrl);
@@ -194,7 +201,7 @@ public class Tab1Fragment extends ListFragment {
             File channelImageFile = new File(getActivity().getFilesDir().getAbsolutePath() + "/" + channelTitle + ".png");
             if (channelImageFile.exists()) {
                 try {
-                    imageSource.setImageBitmap(BitmapFactory.decodeStream(new FileInputStream(channelImageFile)));
+                imageSource.setImageBitmap(BitmapFactory.decodeStream(new FileInputStream(channelImageFile)));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

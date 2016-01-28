@@ -1,12 +1,12 @@
 package com.markod.rssfeed.rssHandler;
 
-
 public class RssItem {
     String title;
     String pubDate;
     String link;
     String channelImageUrl;
     String channelTitle;
+    String description;
 
     public void setPubDate(String link) {
         this.pubDate = link;
@@ -22,6 +22,10 @@ public class RssItem {
 
     public void setChannelTitle(String channelTitle) {
         this.channelTitle = channelTitle;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getPubDate() {
@@ -44,9 +48,12 @@ public class RssItem {
         return channelTitle;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public String toString() {
         return channelTitle;
     }
 }
-

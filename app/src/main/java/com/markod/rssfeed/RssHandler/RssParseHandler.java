@@ -1,5 +1,7 @@
 package com.markod.rssfeed.rssHandler;
 
+import android.util.Log;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -18,6 +20,7 @@ public class RssParseHandler extends DefaultHandler {
     private Boolean parsingPubDate;
     private Boolean parsingImageUrl = false;
     private Boolean parsingLink;
+    private Boolean parsingDescription;
 
 
     public RssParseHandler() {
@@ -27,6 +30,7 @@ public class RssParseHandler extends DefaultHandler {
     public List<RssItem> getRssItems() {
         return rssItems;
     }
+    public StringBuilder stringBuilder;
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -43,6 +47,9 @@ public class RssParseHandler extends DefaultHandler {
                 parsingLink = true;
             case "pubDate":
                 parsingPubDate = true;
+            case "description":
+                stringBuilder = new StringBuilder();
+                parsingDescription = true;
         }
     }
 
@@ -58,6 +65,8 @@ public class RssParseHandler extends DefaultHandler {
                 parsingLink = false;
             case "pubDate":
                 parsingPubDate = false;
+            case "description":
+                parsingDescription = false;
         }
     }
 
@@ -77,7 +86,12 @@ public class RssParseHandler extends DefaultHandler {
             } else if (parsingLink) {
                 currentItem.setLink(new String(ch, start, length));
             } else if (parsingPubDate) {
-                currentItem.setPubDate(new String(ch, start, 21));
+                currentItem.setPubDate(new String(ch, start, 25));
+            } else if (parsingDescription) {
+                for (int i=start; i<start+length; i++) {
+                    stringBuilder.append(ch[i]);
+                }
+                currentItem.setDescription(stringBuilder.toString());
             }
         }
 

@@ -101,7 +101,6 @@ public class AddEditSourceActivity extends AppCompatActivity {
                 if (cursor.moveToFirst()) {
                     sourceName = cursor.getString(1);
                     sourceUrl = cursor.getString(2);
-                    Log.d("a", "AAAAAAAAAA " + sourceName);
                 }
                 cursor.close();
                 return true;
