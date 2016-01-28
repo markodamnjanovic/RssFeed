@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.markod.rssfeed.FeedDetailActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/sourceImageView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_published"
+                android:id="@+id/textPublished"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/sourceImageView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textPubDate"
+                android:layout_below="@+id/textPublished"
+                android:layout_alignStart="@+id/textPublished" />
+
+            <ImageButton
+                android:id="@+id/favoriteButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="31dp"
+                android:layout_alignBottom="@+id/textSource"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_star_rate_black_18dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_source"
+                android:id="@+id/textSource"
+                android:layout_below="@+id/textPubDate"
+                android:layout_toEndOf="@+id/sourceImageView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/textTitle"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="87dp"
+                android:layout_alignParentEnd="true" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textDescription"
+                android:layout_marginTop="116dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

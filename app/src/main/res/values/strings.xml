@@ -12,4 +12,6 @@
     <string name="populate_field_error">Please populate this field</string>
     <string name="go_to_edit_source">Go to edit source</string>
     <string name="action_delete">Delete selected items</string>
+    <string name="text_published">Published</string>
+    <string name="text_source">Source</string>
 </resources>

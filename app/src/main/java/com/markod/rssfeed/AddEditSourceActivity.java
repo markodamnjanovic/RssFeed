@@ -97,12 +97,13 @@ public class AddEditSourceActivity extends AppCompatActivity {
             SQLiteOpenHelper helper = new RssFeedDatabaseHelper(AddEditSourceActivity.this);
             try {
                 db = helper.getWritableDatabase();
-                    Cursor cursor = db.query("rss_feed", new String[]{"_id", "source_name", "source_url"}, "_id = ?", new String[]{Integer.toString(sourceId)}, null, null, null);
-                    if (cursor.moveToFirst()) {
-                        sourceName = cursor.getString(1);
-                        sourceUrl = cursor.getString(2);
-                    }
-                    cursor.close();
+                Cursor cursor = db.query("rss_feed", new String[]{"_id", "source_name", "source_url"}, "_id = ?", new String[]{Integer.toString(sourceId)}, null, null, null);
+                if (cursor.moveToFirst()) {
+                    sourceName = cursor.getString(1);
+                    sourceUrl = cursor.getString(2);
+                    Log.d("a", "AAAAAAAAAA " + sourceName);
+                }
+                cursor.close();
                 return true;
             } catch (Exception e) {
                 return false;
