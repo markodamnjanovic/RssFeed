@@ -181,6 +181,8 @@ public class Tab1Fragment extends ListFragment {
     private class GetFavoriteValueForFeedAsyncTask extends AsyncTask<Object, Void, Boolean> {
 
         View listItemView;
+        Cursor cursor;
+        SQLiteDatabase db;
 
         @Override
         protected Boolean doInBackground(Object... objects) {
@@ -188,8 +190,8 @@ public class Tab1Fragment extends ListFragment {
             String link = (String) objects[1];
             SQLiteOpenHelper helper = new RssFeedDatabaseHelper(getActivity());
             try {
-                SQLiteDatabase db = helper.getWritableDatabase();
-                Cursor cursor = db.query("rss_feed_favorite", new String[]{"_id"}, "link = ? AND favorite = 1", new String[]{link}, null, null, null);
+                db = helper.getWritableDatabase();
+                cursor = db.query("rss_feed_favorite", new String[]{"_id"}, "link = ? AND favorite = 1", new String[]{link}, null, null, null);
                 return cursor.moveToFirst();
             } catch (Exception e) {
                 return null;
@@ -204,6 +206,8 @@ public class Tab1Fragment extends ListFragment {
                 ImageView favoriteView = (ImageView) listItemView.findViewById(R.id.favoriteImage);
                 favoriteView.setVisibility(View.VISIBLE);
             }
+            db.close();
+            cursor.close();
         }
     }
 
@@ -246,5 +250,4 @@ public class Tab1Fragment extends ListFragment {
             return convertView;
         }
     }
-
 }

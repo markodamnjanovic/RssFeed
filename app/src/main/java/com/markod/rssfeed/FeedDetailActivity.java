@@ -153,6 +153,8 @@ public class FeedDetailActivity extends AppCompatActivity {
                     values.put("favorite", favorite);
                     db.update("rss_feed_favorite", values, "link = ?", new String[]{link});
                 } else {
+                    String uniqueId = UUID.randomUUID().toString();
+                    values.put("unique_id", uniqueId);
                     values.put("link", link);
                     values.put("feed_title", feedTitle);
                     values.put("pub_date", pubDate);
