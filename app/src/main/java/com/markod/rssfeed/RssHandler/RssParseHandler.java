@@ -44,6 +44,7 @@ public class RssParseHandler extends DefaultHandler {
             case "title":
                 parsingTitle = true;
             case "link":
+                stringBuilder = new StringBuilder();
                 parsingLink = true;
             case "pubDate":
                 parsingPubDate = true;
@@ -84,7 +85,10 @@ public class RssParseHandler extends DefaultHandler {
             if (parsingTitle) {
                 currentItem.setTitle(new String(ch, start, length));
             } else if (parsingLink) {
-                currentItem.setLink(new String(ch, start, length));
+                for (int i=start; i < start + length; i++) {
+                    stringBuilder.append(ch[i]);
+                }
+                currentItem.setLink(stringBuilder.toString());
             } else if (parsingPubDate) {
                 currentItem.setPubDate(new String(ch, start, 25));
             } else if (parsingDescription) {

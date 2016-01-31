@@ -7,6 +7,24 @@ public class RssItem {
     String channelImageUrl;
     String channelTitle;
     String description;
+    int favorite;
+
+    public RssItem(String title, String pubDate, String link, String channelTitle, String description) {
+        this.title = title;
+        this.pubDate = pubDate;
+        this.link = link;
+        this.channelTitle = channelTitle;
+        this.description = description;
+        this.channelImageUrl = null;
+    }
+
+    public RssItem(){
+
+    }
+
+    public void setFavorite(int favorite) {
+        this.favorite = favorite;
+    }
 
     public void setPubDate(String link) {
         this.pubDate = link;
@@ -26,6 +44,10 @@ public class RssItem {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getFavorite() {
+        return favorite;
     }
 
     public String getPubDate() {

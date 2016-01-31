@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -176,7 +178,36 @@ public class Tab1Fragment extends ListFragment {
 
     }
 
-    private class RssFeedsArrayAdapter extends ArrayAdapter {
+    private class GetFavoriteValueForFeedAsyncTask extends AsyncTask<Object, Void, Boolean> {
+
+        View listItemView;
+
+        @Override
+        protected Boolean doInBackground(Object... objects) {
+            listItemView = (View) objects[0];
+            String link = (String) objects[1];
+            SQLiteOpenHelper helper = new RssFeedDatabaseHelper(getActivity());
+            try {
+                SQLiteDatabase db = helper.getWritableDatabase();
+                Cursor cursor = db.query("rss_feed_favorite", new String[]{"_id"}, "link = ? AND favorite = 1", new String[]{link}, null, null, null);
+                return cursor.moveToFirst();
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (success == null) {
+                Toast.makeText(getActivity(), "Database unavailable", Toast.LENGTH_LONG).show();
+            } else if (success) {
+                ImageView favoriteView = (ImageView) listItemView.findViewById(R.id.favoriteImage);
+                favoriteView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    public class RssFeedsArrayAdapter extends ArrayAdapter {
 
         private Context context;
         private int layout;
@@ -211,6 +242,7 @@ public class Tab1Fragment extends ListFragment {
 
             textTitle.setText(item.getTitle());
             textDate.setText(item.getPubDate());
+            new GetFavoriteValueForFeedAsyncTask().execute(convertView, item.getLink());
             return convertView;
         }
     }

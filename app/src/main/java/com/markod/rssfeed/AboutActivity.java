@@ -38,7 +38,6 @@ public class AboutActivity extends AppCompatActivity {
         NameDescriptionArayAdapter nameDescriptionArayAdapter = new NameDescriptionArayAdapter(this, android.R.layout.simple_list_item_2, objectList);
         ListView aboutListView = (ListView) findViewById(R.id.about_list_view);
         aboutListView.setAdapter(nameDescriptionArayAdapter);
-
     }
 }
 

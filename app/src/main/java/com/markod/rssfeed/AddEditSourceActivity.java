@@ -150,7 +150,6 @@ public class AddEditSourceActivity extends AppCompatActivity {
             try {
                 db = helper.getWritableDatabase();
                 if (isAddExtra) {
-                    values.put("favorite", 0);
                     values.put("show_feed", 1);
                     db.insert("rss_feed", null, values);
                 } else {
