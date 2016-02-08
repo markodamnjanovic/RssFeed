@@ -2,14 +2,18 @@ package com.markod.rssfeed;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -39,6 +43,7 @@ public class AboutActivity extends AppCompatActivity {
         ListView aboutListView = (ListView) findViewById(R.id.about_list_view);
         aboutListView.setAdapter(nameDescriptionArayAdapter);
     }
+
 }
 
 class NameDescriptionArayAdapter extends ArrayAdapter<NameDescriptionListItem> {

@@ -126,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
         new UpdateSourceAsyncTask().execute(listItemUniqueId, switchOn);
     }
 
+
+
     private class UpdateSourceAsyncTask extends AsyncTask<Object, Void, Boolean> {
         @Override
         protected void onPreExecute() {

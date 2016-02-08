@@ -4,6 +4,7 @@ package com.markod.rssfeed.fragments;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -22,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
@@ -29,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.markod.rssfeed.FeedDetailActivity;
 import com.markod.rssfeed.R;
 import com.markod.rssfeed.RssFeedDatabaseHelper;
 import com.markod.rssfeed.rssHandler.RssItem;
@@ -74,6 +77,19 @@ public class Tab2Fragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        listViewFavoriteFeed.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                RssItem item = rssItems.get(position);
+                Intent intent = new Intent(getActivity(), FeedDetailActivity.class);
+                intent.putExtra("title", item.getTitle());
+                intent.putExtra("pubDate", item.getPubDate());
+                intent.putExtra("description", item.getDescription());
+                intent.putExtra("link", item.getLink());
+                intent.putExtra("channelTitle", item.getChannelTitle());
+                startActivity(intent);
+            }
+        });
         listViewFavoriteFeed.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listViewFavoriteFeed.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             SQLiteDatabase db;
